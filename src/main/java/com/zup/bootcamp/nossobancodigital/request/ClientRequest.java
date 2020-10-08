@@ -1,7 +1,6 @@
 package com.zup.bootcamp.nossobancodigital.request;
 
 import com.zup.bootcamp.nossobancodigital.validation.Adult;
-import com.zup.bootcamp.nossobancodigital.validation.Date;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
@@ -23,7 +22,6 @@ public class ClientRequest {
     @CPF(message = "CPF inválido!")
     private String cpf;
 
-    @Date
     @Adult
     private String nascimento;
 
