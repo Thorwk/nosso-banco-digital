@@ -3,6 +3,8 @@ package com.zup.bootcamp.nossobancodigital.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AdultValidator implements ConstraintValidator<Adult, String> {
 
@@ -10,6 +12,11 @@ public class AdultValidator implements ConstraintValidator<Adult, String> {
 
     @Override
     public boolean isValid(String nascimento, ConstraintValidatorContext constraintValidatorContext) {
-        return nascimento != null && LocalDate.now().minusYears(ADULT_AGE).isAfter(LocalDate.parse(nascimento));
+        try{
+            LocalDate.parse(nascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        }catch (DateTimeParseException e){
+            return true;
+        }
+        return LocalDate.now().minusYears(ADULT_AGE).isAfter(LocalDate.parse(nascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 }

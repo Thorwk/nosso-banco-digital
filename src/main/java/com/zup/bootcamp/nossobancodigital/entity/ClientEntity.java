@@ -22,7 +22,7 @@ public class ClientEntity {
 
     private String email;
 
-    private Long cnh;
+    private String cpf;
 
     private LocalDate nascimento;
 
@@ -33,7 +33,7 @@ public class ClientEntity {
         this.nome = clientRequest.getNome();
         this.sobrenome = clientRequest.getSobrenome();
         this.email = clientRequest.getEmail();
-        this.cnh = clientRequest.getCnh();
+        this.cpf = clientRequest.getCpf();
         this.nascimento = LocalDate.parse(clientRequest.getNascimento(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
@@ -53,9 +53,9 @@ public class ClientEntity {
 
     public void setEmail(String email) { this.email = email; }
 
-    public Long getCnh() { return cnh; }
+    public String getCpf() { return cpf; }
 
-    public void setCnh(Long cnh) { this.cnh = cnh; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
     public LocalDate getNascimento() { return nascimento; }
 
