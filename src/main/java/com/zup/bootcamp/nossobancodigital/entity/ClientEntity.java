@@ -5,7 +5,6 @@ import com.zup.bootcamp.nossobancodigital.request.ClientRequest;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -38,6 +37,10 @@ public class ClientEntity {
     private String cidade;
 
     private String estado;
+
+    private String arquivoCPF;
+
+    private int etapa = 0;
 
     public ClientEntity() { }
 
@@ -97,4 +100,13 @@ public class ClientEntity {
     public String getEstado() { return estado; }
 
     public void setEstado(String estado) { this.estado = estado; }
+
+    public String getArquivoCPF() { return arquivoCPF; }
+
+    public void setArquivoCPF(String arquivoCPF) { this.arquivoCPF = arquivoCPF; }
+
+    public int getEtapa() { return etapa; }
+
+    public void setEtapa(int etapa) { this.etapa = etapa; }
+
 }
