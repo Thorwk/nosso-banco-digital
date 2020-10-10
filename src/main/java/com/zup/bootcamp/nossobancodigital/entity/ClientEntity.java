@@ -22,9 +22,25 @@ public class ClientEntity {
 
     private String email;
 
-    private Long cnh;
+    private String cpf;
 
     private LocalDate nascimento;
+
+    private String cep;
+
+    private String rua;
+
+    private String bairro;
+
+    private String complemento;
+
+    private String cidade;
+
+    private String estado;
+
+    private String arquivoCPF;
+
+    private int etapa = 0;
 
     public ClientEntity() { }
 
@@ -33,7 +49,7 @@ public class ClientEntity {
         this.nome = clientRequest.getNome();
         this.sobrenome = clientRequest.getSobrenome();
         this.email = clientRequest.getEmail();
-        this.cnh = clientRequest.getCnh();
+        this.cpf = clientRequest.getCpf();
         this.nascimento = LocalDate.parse(clientRequest.getNascimento(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
@@ -53,12 +69,44 @@ public class ClientEntity {
 
     public void setEmail(String email) { this.email = email; }
 
-    public Long getCnh() { return cnh; }
+    public String getCpf() { return cpf; }
 
-    public void setCnh(Long cnh) { this.cnh = cnh; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
     public LocalDate getNascimento() { return nascimento; }
 
     public void setNascimento(LocalDate nascimento) { this.nascimento = nascimento; }
+
+    public String getCep() { return cep; }
+
+    public void setCep(String cep) { this.cep = cep; }
+
+    public String getRua() { return rua; }
+
+    public void setRua(String rua) { this.rua = rua; }
+
+    public String getBairro() { return bairro; }
+
+    public void setBairro(String bairro) { this.bairro = bairro; }
+
+    public String getComplemento() { return complemento; }
+
+    public void setComplemento(String complemento) { this.complemento = complemento; }
+
+    public String getCidade() { return cidade; }
+
+    public void setCidade(String cidade) { this.cidade = cidade; }
+
+    public String getEstado() { return estado; }
+
+    public void setEstado(String estado) { this.estado = estado; }
+
+    public String getArquivoCPF() { return arquivoCPF; }
+
+    public void setArquivoCPF(String arquivoCPF) { this.arquivoCPF = arquivoCPF; }
+
+    public int getEtapa() { return etapa; }
+
+    public void setEtapa(int etapa) { this.etapa = etapa; }
 
 }
