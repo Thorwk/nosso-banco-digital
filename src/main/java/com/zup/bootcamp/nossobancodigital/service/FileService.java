@@ -18,7 +18,7 @@ import java.nio.file.*;
 import java.util.NoSuchElementException;
 
 @Service
-public class FileUploadService {
+public class FileService {
 
     private final Path dirLocation;
 
@@ -26,7 +26,7 @@ public class FileUploadService {
     private ClientRepository clientRepository;
 
     @Autowired
-    public FileUploadService(FileUploadProperties fileUploadProperties) {
+    public FileService(FileUploadProperties fileUploadProperties) {
         this.dirLocation = Paths.get(fileUploadProperties.getLocation())
                                 .toAbsolutePath()
                                 .normalize();

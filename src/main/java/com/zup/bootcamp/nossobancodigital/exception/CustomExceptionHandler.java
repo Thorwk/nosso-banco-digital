@@ -13,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.FileSystemException;
+import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,10 +33,18 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
+    @ExceptionHandler(DateTimeException.class)
+    public ResponseEntity<ApiErrorResponse> handleDateTimeException(DateTimeException e){
+        ApiErrorResponse error = new ApiErrorResponse();
+        error.setField("Data de nascimento");
+        error.setMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<ApiErrorResponse> handleEntityExistsException(EntityExistsException e){
         ApiErrorResponse error = new ApiErrorResponse();
-        error.setField("email");
+        error.setField("Entidade");
         error.setMessage(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -52,7 +61,6 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleException(FileNotFoundException e){
-        System.out.println("entrei aqui");
         ApiErrorResponse error = new ApiErrorResponse();
         error.setField("File");
         error.setMessage(e.getMessage());
@@ -63,9 +71,9 @@ public class CustomExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiErrorResponse> handleNoSuchElementException(NoSuchElementException e){
         ApiErrorResponse error = new ApiErrorResponse();
-        error.setField("File");
+        error.setField("Entidade");
         error.setMessage("Cliente não cadastrado");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)

@@ -2,13 +2,14 @@ package com.zup.bootcamp.nossobancodigital.service;
 
 import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
 import com.zup.bootcamp.nossobancodigital.repository.ClientRepository;
-import com.zup.bootcamp.nossobancodigital.request.ClientRequest;
-import com.zup.bootcamp.nossobancodigital.request.EnderecoRequest;
+import com.zup.bootcamp.nossobancodigital.request.*;
 import com.zup.bootcamp.nossobancodigital.response.ClientResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
@@ -17,6 +18,15 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired @Lazy
+    private ContaService contaService;
+
+    @Autowired @Lazy
+    private EmailService emailService;
+
+    @Autowired @Lazy
+    private TokenService tokenService;
 
     public String saveClient(ClientRequest clientRequest) {
         verifyEmail(clientRequest.getEmail());
@@ -60,6 +70,62 @@ public class ClientService {
         verifyStep(id, 3);
         ClientResponse clientResponse = new ClientResponse(clientRepository.findById(id).get());
         return clientResponse;
+    }
+
+    public ClientEntity findEntityById(String id){
+        return clientRepository.findById(id).get();
+    }
+
+    public void saveEntity(ClientEntity client){ clientRepository.save(client);}
+
+    public String acceptedClient(AceiteRequest aceite, String id) throws InterruptedException {
+        ClientEntity client = clientRepository.findById(id).get();
+        String mensagem;
+        if(aceite.getAceite().equals("1")){
+            client.setAceiteCliente(true);
+            clientRepository.save(client);
+            mensagem = "Muito obrigado por sua aplicação! \n" +
+                    "Um email será enviado em breve com mais informações.";
+        }else{
+            mensagem = "É uma pena que não tenha aceito :(. \n" +
+                    "Um email será enviado com uma proposta que você não vai poder recusar.";
+        }
+
+        contaService.acceptedExternal(id);
+
+        return mensagem;
+    }
+
+    public String logIn(LoginRequest login) throws InvalidAttributeValueException{
+        ClientEntity client = clientRepository.findByEmail(login.getEmail());
+        if(client.isPrimeiroAcesso()) {
+            if (client.getEmail().equals(login.getEmail()) && client.getCpf().equals(login.getSenha())) {
+                client.setPrimeiroAcesso(false);
+                client.setToken(tokenService.createToken(client.getId()));
+                clientRepository.save(client);
+                emailService.sendToken(client.getToken().getConteudo(), client.getId());
+
+                String location = ServletUriComponentsBuilder
+                        .fromUriString("http://localhost:8080/login")
+                        .path("/{id}")
+                        .buildAndExpand(client.getId())
+                        .toUriString();
+                return location;
+            } else {
+                throw new InvalidAttributeValueException("Email ou senha incorretos!");
+            }
+        }else{
+            if(client.getEmail().equals(login.getEmail()) && client.getToken().getConteudo().equals(login.getSenha())){
+                //inicia sessão
+                return null;
+            }else{
+                throw new InvalidAttributeValueException("Email ou senha incorretos!");
+            }
+        }
+    }
+
+    public void changePassword(String id, SenhaRequest senha){
+
     }
 
     public void verifyStep(String id, int etapa) throws EntityNotFoundException {
