@@ -127,10 +127,12 @@ public class ClientService {
 
     public String changePassword(String id, SenhaRequest senha) throws ValidationException {
         ClientEntity client = clientRepository.findById(id).get();
-        if(!client.getToken().getConteudo().equals(senha.getToken())
-                || tokenService.isExpired(senha.getToken())
-                || tokenService.isUsed(senha.getToken())){
+        if(!client.getToken().getConteudo().equals(senha.getToken())){
             throw new ValidationException("Token inválido!");
+        }else if(tokenService.isExpired(senha.getToken())) {
+            throw new ValidationException("Token expirado!");
+        }else if(tokenService.isUsed(senha.getToken())){
+            throw new ValidationException("Token já utilizado!");
         }else {
             client.getToken().setUsado(true);
             client.setSenha(BCrypt.hashpw(senha.getSenha(), BCrypt.gensalt()));

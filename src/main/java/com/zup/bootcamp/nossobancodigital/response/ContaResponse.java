@@ -41,9 +41,7 @@ public class ContaResponse {
         this.agencia = agencia;
     }
 
-    public String getConta() {
-        return conta;
-    }
+    public String getConta() { return conta; }
 
     public void setConta(String conta) {
         this.conta = conta;
@@ -57,21 +55,15 @@ public class ContaResponse {
         this.codigoBanco = codigoBanco;
     }
 
-    public double getSaldo() {
-        return saldo;
-    }
+    public double getSaldo() { return saldo; }
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
-    }
+    public String getNomeCompleto() { return nomeCompleto; }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
-    }
+    public void setNomeCompleto(String nomeCompleto) { this.nomeCompleto = nomeCompleto; }
 
     @Override
     public String toString() {

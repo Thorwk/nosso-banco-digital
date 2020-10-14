@@ -1,6 +1,5 @@
 package com.zup.bootcamp.nossobancodigital.service;
 
-import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
 import com.zup.bootcamp.nossobancodigital.entity.TokenEntity;
 import com.zup.bootcamp.nossobancodigital.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;

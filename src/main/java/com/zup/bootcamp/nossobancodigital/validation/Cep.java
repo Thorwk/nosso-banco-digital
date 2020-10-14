@@ -12,7 +12,6 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = { })
 @NotBlank(message = "Cep é obrigatório!")
-@Size(max = 10, message = "Cep inválido!")
 @Pattern(message = "Cep inválido!", regexp = "^[0-9]{5}-[0-9]{3}$")
 public @interface Cep {
 

@@ -3,7 +3,6 @@ package com.zup.bootcamp.nossobancodigital.service;
 import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
 import com.zup.bootcamp.nossobancodigital.entity.ContaEntity;
 import com.zup.bootcamp.nossobancodigital.repository.ContaRepository;
-import com.zup.bootcamp.nossobancodigital.request.LoginRequest;
 import com.zup.bootcamp.nossobancodigital.request.TransferRequest;
 import com.zup.bootcamp.nossobancodigital.response.ContaResponse;
 import org.springframework.beans.factory.annotation.Autowired;

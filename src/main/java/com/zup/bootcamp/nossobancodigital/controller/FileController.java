@@ -24,10 +24,8 @@ public class FileController {
     @GetMapping("/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("id") String id) throws Exception{
         Resource resource = fileService.loadFile(id);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
 }
