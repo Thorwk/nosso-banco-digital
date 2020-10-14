@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.xml.bind.ValidationException;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.FileSystemException;
@@ -101,6 +103,15 @@ public class CustomExceptionHandler {
         error.setMessage(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ApiErrorResponse> handleValidationException(ValidationException e){
+        ApiErrorResponse error = new ApiErrorResponse();
+        error.setField("token");
+        error.setMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }

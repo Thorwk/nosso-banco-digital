@@ -20,7 +20,6 @@ public class TokenService {
     @Autowired
     private TokenRepository tokenRepository;
 
-
     @Autowired
     private EmailService emailService;
 

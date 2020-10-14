@@ -1,5 +1,6 @@
 package com.zup.bootcamp.nossobancodigital.service;
 
+import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
 import com.zup.bootcamp.nossobancodigital.response.ClientResponse;
 import com.zup.bootcamp.nossobancodigital.response.ContaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +51,15 @@ public class EmailService {
                 .buildAndExpand(id)
                 .toUriString();
 
-        ClientResponse client = clientService.findById(id);
+        ClientEntity client = clientService.findEntityById(id);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply.nossobancodigital@gmail.com");
         message.setTo(client.getEmail());
         message.setSubject("Token de Primeiro Acesso - Nosso Banco Digital");
         message.setText("Utilize o token abaixo para cadastrar sua senha.\n\n"
-                        + "Token: " + client.getToken() + "\n\n"
-                        + "Link para cadastro da senha: " + location);
+                        + "Token: " + client.getToken().getConteudo() + "\n\n"
+                        + "Link para cadastro da senha: " + location + " \n\n"
+                        + "Obs.: O token tem validade de 1 hora.");
 
         javaMailSender.send(message);
 

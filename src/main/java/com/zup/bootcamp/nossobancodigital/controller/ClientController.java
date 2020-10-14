@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.management.InvalidAttributeValueException;
 import javax.validation.Valid;
+import javax.xml.bind.ValidationException;
 
 @RestController
 @RequestMapping("/")
@@ -40,13 +41,14 @@ public class ClientController {
     }
 
     @PutMapping("/login")
-    public ResponseEntity<?> logIn(@Valid @RequestBody LoginRequest login) throws InvalidAttributeValueException {
+    public ResponseEntity<?> logIn(@Valid @RequestBody LoginRequest login) throws ValidationException {
         return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.LOCATION, clientService.logIn(login)).build();
     }
 
     @PutMapping("/login/{id}")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody SenhaRequest senha, @PathVariable("id") String id){
-        return null;
+    public ResponseEntity<?> changePassword(@Valid @RequestBody SenhaRequest senha, @PathVariable("id") String id) throws ValidationException {
+        //return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.LOCATION, clientService.changePassword(id, senha)).build();
+        return ResponseEntity.ok().body(clientService.changePassword(id, senha));
     }
 
 }

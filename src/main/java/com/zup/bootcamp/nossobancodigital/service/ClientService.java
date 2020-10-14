@@ -6,12 +6,13 @@ import com.zup.bootcamp.nossobancodigital.request.*;
 import com.zup.bootcamp.nossobancodigital.response.ClientResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.xml.bind.ValidationException;
 
 @Service
 public class ClientService {
@@ -96,7 +97,7 @@ public class ClientService {
         return mensagem;
     }
 
-    public String logIn(LoginRequest login) throws InvalidAttributeValueException{
+    public String logIn(LoginRequest login) throws ValidationException{
         ClientEntity client = clientRepository.findByEmail(login.getEmail());
         if(client.isPrimeiroAcesso()) {
             if (client.getEmail().equals(login.getEmail()) && client.getCpf().equals(login.getSenha())) {
@@ -112,20 +113,37 @@ public class ClientService {
                         .toUriString();
                 return location;
             } else {
-                throw new InvalidAttributeValueException("Email ou senha incorretos!");
+                throw new ValidationException("Email ou senha incorretos!");
             }
         }else{
             if(client.getEmail().equals(login.getEmail()) && client.getToken().getConteudo().equals(login.getSenha())){
                 //inicia sessão
                 return null;
             }else{
-                throw new InvalidAttributeValueException("Email ou senha incorretos!");
+                throw new ValidationException("Email ou senha incorretos!");
             }
         }
     }
 
-    public void changePassword(String id, SenhaRequest senha){
+    public String changePassword(String id, SenhaRequest senha) throws ValidationException {
+        ClientEntity client = clientRepository.findById(id).get();
+        if(!client.getToken().getConteudo().equals(senha.getToken())
+                || tokenService.isExpired(senha.getToken())
+                || tokenService.isUsed(senha.getToken())){
+            throw new ValidationException("Token inválido!");
+        }else {
+            client.getToken().setUsado(true);
+            client.setSenha(BCrypt.hashpw(senha.getSenha(), BCrypt.gensalt()));
+            clientRepository.save(client);
 
+            String location = ServletUriComponentsBuilder
+                    .fromUriString("http://localhost:8080/login")
+                    .path("/{id}")
+                    .buildAndExpand(client.getId())
+                    .toUriString();
+
+            return client.getSenha();
+        }
     }
 
     public void verifyStep(String id, int etapa) throws EntityNotFoundException {

@@ -32,8 +32,6 @@ public class ClientResponse {
 
     private String arquivoCpf;
 
-    private String token;
-
     public ClientResponse(ClientEntity clientEntity) {
         this.id = clientEntity.getId();
         this.nome = clientEntity.getNome();
@@ -48,7 +46,6 @@ public class ClientResponse {
         this.cidade = clientEntity.getCidade();
         this.estado = clientEntity.getEstado();
         this.arquivoCpf = clientEntity.getArquivoCPF();
-        this.token = clientEntity.getToken().getConteudo();
     }
 
     public String getId() { return id; }
@@ -144,10 +141,6 @@ public class ClientResponse {
     public String getArquivoCpf() { return arquivoCpf; }
 
     public void setArquivoCpf(String arquivoCpf) { this.arquivoCpf = arquivoCpf; }
-
-    public String getToken() { return token; }
-
-    public void setToken(String token) { this.token = token; }
 
     @Override
     public String toString() {
