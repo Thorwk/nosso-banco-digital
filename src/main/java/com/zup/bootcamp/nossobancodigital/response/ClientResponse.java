@@ -141,4 +141,23 @@ public class ClientResponse {
     public String getArquivoCpf() { return arquivoCpf; }
 
     public void setArquivoCpf(String arquivoCpf) { this.arquivoCpf = arquivoCpf; }
+
+    @Override
+    public String toString() {
+        return "ClientResponse{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", email='" + email + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", nascimento=" + nascimento +
+                ", cep='" + cep + '\'' +
+                ", rua='" + rua + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", estado='" + estado + '\'' +
+                ", arquivoCpf='" + arquivoCpf + '\'' +
+                '}';
+    }
 }

@@ -2,9 +2,7 @@ package com.zup.bootcamp.nossobancodigital.entity;
 
 import com.zup.bootcamp.nossobancodigital.request.ClientRequest;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -40,7 +38,24 @@ public class ClientEntity {
 
     private String arquivoCPF;
 
+    private boolean aceiteCliente;
+
+    private boolean aceiteExterno;
+
+    private boolean liberado;
+
     private int etapa = 0;
+
+    private boolean primeiroAcesso;
+
+    private String senha;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "token", referencedColumnName = "id_token")
+    private TokenEntity token;
+
+    @OneToOne(mappedBy = "cliente")
+    private ContaEntity conta;
 
     public ClientEntity() { }
 
@@ -51,6 +66,10 @@ public class ClientEntity {
         this.email = clientRequest.getEmail();
         this.cpf = clientRequest.getCpf();
         this.nascimento = LocalDate.parse(clientRequest.getNascimento(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.aceiteCliente = false;
+        this.aceiteExterno = false;
+        this.liberado = false;
+        this.primeiroAcesso = true;
     }
 
     public String getId() { return id; }
@@ -105,8 +124,35 @@ public class ClientEntity {
 
     public void setArquivoCPF(String arquivoCPF) { this.arquivoCPF = arquivoCPF; }
 
+    public boolean isAceiteCliente() { return aceiteCliente; }
+
+    public void setAceiteCliente(boolean aceiteCliente) { this.aceiteCliente = aceiteCliente; }
+
+    public boolean isAceiteExterno() { return aceiteExterno; }
+
+    public void setAceiteExterno(boolean aceiteExterno) { this.aceiteExterno = aceiteExterno; }
+
+    public boolean isLiberado() { return liberado; }
+
+    public void setLiberado(boolean liberado) { this.liberado = liberado; }
+
     public int getEtapa() { return etapa; }
 
     public void setEtapa(int etapa) { this.etapa = etapa; }
 
+    public boolean isPrimeiroAcesso() { return primeiroAcesso; }
+
+    public void setPrimeiroAcesso(boolean primeiroAcesso) { this.primeiroAcesso = primeiroAcesso; }
+
+    public String getSenha() { return senha; }
+
+    public void setSenha(String senha) { this.senha = senha; }
+
+    public TokenEntity getToken() { return token; }
+
+    public void setToken(TokenEntity token) { this.token = token; }
+
+    public ContaEntity getConta() { return conta; }
+
+    public void setConta(ContaEntity conta) { this.conta = conta; }
 }
