@@ -20,7 +20,8 @@ public class TransferController {
 
     @PostMapping
     public ResponseEntity<?> receiveTransfer(@Valid @RequestBody TransferRequest transferRequest){
-        return ResponseEntity.ok().body(transferService.receiveTransfer(transferRequest));
+        transferService.receiveTransfer(transferRequest);
+        return ResponseEntity.ok().build();
     }
 
 }

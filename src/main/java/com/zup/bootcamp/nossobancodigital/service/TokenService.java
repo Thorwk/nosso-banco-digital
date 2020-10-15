@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Service
 public class TokenService {
 
-    private final int VALIDADE_TOKEN = 1;
+    // em horas
+    public static final int VALIDADE_TOKEN = 1;
 
     @Autowired
     private TokenRepository tokenRepository;

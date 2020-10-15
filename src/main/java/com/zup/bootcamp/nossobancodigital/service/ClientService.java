@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.xml.bind.ValidationException;
+import java.util.NoSuchElementException;
 
 @Service
 public class ClientService {
@@ -79,7 +80,7 @@ public class ClientService {
 
     public void saveEntity(ClientEntity client){ clientRepository.save(client);}
 
-    public String acceptedClient(AceiteRequest aceite, String id) throws InterruptedException {
+    public String acceptedClient(AceiteRequest aceite, String id) {
         ClientEntity client = clientRepository.findById(id).get();
         String mensagem;
         if(aceite.getAceite().equals("1")){
@@ -99,6 +100,9 @@ public class ClientService {
 
     public String logIn(LoginRequest login) throws ValidationException{
         ClientEntity client = clientRepository.findByEmail(login.getEmail());
+        if(client == null){
+            throw new NoSuchElementException("Cliente não cadastrado!");
+        }
         if(client.isPrimeiroAcesso()) {
             if (client.getEmail().equals(login.getEmail()) && client.getCpf().equals(login.getSenha())) {
                 client.setPrimeiroAcesso(false);
@@ -139,12 +143,12 @@ public class ClientService {
             clientRepository.save(client);
 
             String location = ServletUriComponentsBuilder
-                    .fromUriString("http://localhost:8080/login")
-                    .path("/{id}")
+                    .fromUriString("http://localhost:8080")
+                    .path("/login")
                     .buildAndExpand(client.getId())
                     .toUriString();
 
-            return client.getSenha();
+            return location;
         }
     }
 

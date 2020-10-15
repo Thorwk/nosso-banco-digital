@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.InvalidAttributeValueException;
 import javax.validation.Valid;
 import javax.xml.bind.ValidationException;
 
@@ -31,12 +30,12 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientResponse> listClients(@PathVariable("id") String id){
+    public ResponseEntity<ClientResponse> getClient(@PathVariable("id") String id){
         return ResponseEntity.ok(clientService.findById(id));
     }
 
     @PutMapping("/aceite/{id}")
-    public ResponseEntity<?> acceptedClient(@Valid @RequestBody AceiteRequest aceite, @PathVariable("id") String id) throws InterruptedException {
+    public ResponseEntity<?> acceptedClient(@Valid @RequestBody AceiteRequest aceite, @PathVariable("id") String id) {
         return ResponseEntity.ok(clientService.acceptedClient(aceite, id));
     }
 
@@ -47,8 +46,7 @@ public class ClientController {
 
     @PutMapping("/login/{id}")
     public ResponseEntity<?> changePassword(@Valid @RequestBody SenhaRequest senha, @PathVariable("id") String id) throws ValidationException {
-        //return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.LOCATION, clientService.changePassword(id, senha)).build();
-        return ResponseEntity.ok().body(clientService.changePassword(id, senha));
+        return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.LOCATION, clientService.changePassword(id, senha)).build();
     }
 
 }

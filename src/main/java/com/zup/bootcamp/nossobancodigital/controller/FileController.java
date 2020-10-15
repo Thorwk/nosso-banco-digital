@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/files")
 public class FileController {
@@ -17,12 +20,12 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> uploadFile(@RequestParam("file")MultipartFile file, @PathVariable("id") String id) throws Exception{
+    public ResponseEntity<?> uploadFile(@RequestParam("file")MultipartFile file, @PathVariable("id") String id) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, fileService.saveFile(file, id)).build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("id") String id) throws Exception{
+    public ResponseEntity<Resource> downloadFile(@PathVariable("id") String id) throws FileNotFoundException {
         Resource resource = fileService.loadFile(id);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);

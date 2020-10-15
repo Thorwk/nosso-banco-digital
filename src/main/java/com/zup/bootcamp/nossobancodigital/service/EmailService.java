@@ -15,6 +15,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Service
 public class EmailService {
 
+    private final String EMAIL = "noreply.nossobancodigital@gmail.com";
+
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -28,7 +30,7 @@ public class EmailService {
 
         ClientResponse client = clientService.findById(id);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply.nossobancodigital@gmail.com");
+        message.setFrom(EMAIL);
         message.setTo(client.getEmail());
         message.setSubject("Conta - Nosso Banco Digital");
 
@@ -53,13 +55,13 @@ public class EmailService {
 
         ClientEntity client = clientService.findEntityById(id);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply.nossobancodigital@gmail.com");
+        message.setFrom(EMAIL);
         message.setTo(client.getEmail());
         message.setSubject("Token de Primeiro Acesso - Nosso Banco Digital");
         message.setText("Utilize o token abaixo para cadastrar sua senha.\n\n"
                         + "Token: " + client.getToken().getConteudo() + "\n\n"
                         + "Link para cadastro da senha: " + location + " \n\n"
-                        + "Obs.: O token tem validade de 1 hora.");
+                        + "Obs.: O token tem validade de " + TokenService.VALIDADE_TOKEN + " hora.");
 
         javaMailSender.send(message);
 

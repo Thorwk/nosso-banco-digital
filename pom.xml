@@ -60,19 +60,9 @@
 			<version>2.3.4.RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>1.23.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.oauth-client</groupId>
-			<artifactId>google-oauth-client-jetty</artifactId>
-			<version>1.23.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-drive</artifactId>
-			<version>v3-rev110-1.23.0</version>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>

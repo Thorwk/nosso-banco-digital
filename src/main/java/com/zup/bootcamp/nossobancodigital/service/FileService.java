@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.NoSuchElementException;
@@ -33,15 +34,15 @@ public class FileService {
     }
 
     @PostConstruct
-    public void init() throws Exception{
+    public void init() throws IOException{
         try{
             Files.createDirectories(this.dirLocation);
-        }catch(Exception e){
-            throw new FileSystemException("Não foi possível criar o diretório de upload!");
+        }catch(IOException e){
+            throw new IOException("Não foi possível criar o diretório de upload!");
         }
     }
 
-    public String saveFile(MultipartFile file, String id) throws FileSystemException {
+    public String saveFile(MultipartFile file, String id) throws IOException {
         verifyStep(id, 2);
         try{
             ClientEntity client = clientRepository.findById(id).get();
@@ -53,8 +54,8 @@ public class FileService {
             client.setArquivoCPF(fileName);
             client.setEtapa(3);
             clientRepository.save(client);
-        }catch (Exception e) {
-            throw new FileSystemException("Não foi possível fazer o upload do arquivo!");
+        }catch (IOException e) {
+            throw new IOException("Não foi possível fazer o upload do arquivo!");
         }
 
         String location = ServletUriComponentsBuilder
