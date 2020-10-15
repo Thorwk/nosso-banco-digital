@@ -20,14 +20,15 @@ public class TokenService {
     @Autowired
     private TokenRepository tokenRepository;
 
-    @Autowired
-    private EmailService emailService;
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public TokenEntity createToken(String id){
         TokenEntity tokenEntity = new TokenEntity();
         tokenRepository.save(tokenEntity);
         return tokenEntity;
+    }
+
+    public boolean existsByConteudo(String conteudo){
+        return tokenRepository.existsByConteudo(conteudo);
     }
 
     public boolean isExpired(String conteudo){

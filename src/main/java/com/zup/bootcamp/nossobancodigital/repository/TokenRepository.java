@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TokenRepository extends JpaRepository<TokenEntity, String> {
     TokenEntity findByConteudo(String conteudo);
+    boolean existsByConteudo(String conteudo);
 }

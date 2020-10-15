@@ -1,8 +1,10 @@
 package com.zup.bootcamp.nossobancodigital.service;
 
+import com.zup.bootcamp.nossobancodigital.NossoBancoDigitalApplication;
 import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
-import com.zup.bootcamp.nossobancodigital.response.ClientResponse;
 import com.zup.bootcamp.nossobancodigital.response.ContaResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,6 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Service
 public class EmailService {
 
+    private static Logger logger = LoggerFactory.getLogger(NossoBancoDigitalApplication.class);
+
     private final String EMAIL = "noreply.nossobancodigital@gmail.com";
 
     @Autowired
@@ -26,27 +30,30 @@ public class EmailService {
     @Autowired @Lazy
     private ContaService contaService;
 
-    public void sendSimpleMessage(String id, boolean aceite){
+    public void sendSimpleMessage(String id){
 
-        ClientResponse client = clientService.findById(id);
+        ClientEntity client = clientService.findEntityById(id);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(EMAIL);
         message.setTo(client.getEmail());
         message.setSubject("Conta - Nosso Banco Digital");
 
-        if(aceite){
+        if(client.isLiberado()){
             ContaResponse contaResponse = contaService.createAccount(id);
             message.setText("Sua conta foi criada com sucesso!\n" + contaResponse.toString());
-        }else{
+            logger.info("Mensagem com os dados da conta");
+        }else if(!client.isAceiteCliente()){
             message.setText("Por favorzinho, aceita a proposta! Te pago um sorvete!");
+            logger.info("Mensagem implorando aceite do cliente");
         }
 
         javaMailSender.send(message);
+        logger.info("Email enviado");
 
     }
 
     @Async
-    public void sendToken(String token, String id){
+    public void sendToken(String id){
         String location = ServletUriComponentsBuilder
                 .fromUriString("http://localhost:8080/login")
                 .path("/{id}")
@@ -64,6 +71,7 @@ public class EmailService {
                         + "Obs.: O token tem validade de " + TokenService.VALIDADE_TOKEN + " hora.");
 
         javaMailSender.send(message);
+        logger.info("Token enviado para o email cadastrado");
 
     }
 

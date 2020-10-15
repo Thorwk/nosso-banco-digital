@@ -107,7 +107,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationException(ValidationException e){
         ApiErrorResponse error = new ApiErrorResponse();
-        error.setField("token");
+        error.setField("autenticação");
         error.setMessage(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

@@ -1,8 +1,11 @@
 package com.zup.bootcamp.nossobancodigital.service;
 
+import com.zup.bootcamp.nossobancodigital.NossoBancoDigitalApplication;
 import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
 import com.zup.bootcamp.nossobancodigital.repository.ClientRepository;
 import com.zup.bootcamp.nossobancodigital.properties.FileUploadProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -20,6 +23,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class FileService {
+
+    private static Logger logger = LoggerFactory.getLogger(NossoBancoDigitalApplication.class);
 
     private final Path dirLocation;
 
@@ -50,11 +55,13 @@ public class FileService {
             String fileName = client.getCpf() + " - " + file.getOriginalFilename();
             Path dFile = this.dirLocation.resolve(fileName);
             Files.copy(file.getInputStream(), dFile, StandardCopyOption.REPLACE_EXISTING);
+            logger.info("Imagem salva no diretório de uploads");
 
             client.setArquivoCPF(fileName);
             client.setEtapa(3);
             clientRepository.save(client);
         }catch (IOException e) {
+            logger.info("Upload não realizado");
             throw new IOException("Não foi possível fazer o upload do arquivo!");
         }
 
@@ -88,12 +95,14 @@ public class FileService {
 
     public void verifyStep(String id, int etapa) throws EntityNotFoundException {
         if(clientRepository.findById(id).get().getEtapa() < etapa){
+            logger.info("Etapa anterior não foi completada");
             throw new EntityNotFoundException("Complete os passos anteriores!");
         }
     }
 
     public void verifyClient(String id) throws NoSuchElementException {
         if(!clientRepository.existsById(id)){
+            logger.info("Cliente não encontrado");
             throw new NoSuchElementException("Cliente não cadastrado");
         }
     }
