@@ -171,6 +171,8 @@ public class ClientService {
 
             logger.info("Header location retornado para o controller");
 
+            emailService.passwordChanged(id);
+
             return location;
         }else{
             throw new ValidationException("Token inválido!");

@@ -74,5 +74,17 @@ public class EmailService {
         logger.info("Token enviado para o email cadastrado");
 
     }
+    @Async
+    public void passwordChanged(String id){
+        ClientEntity client = clientService.findEntityById(id);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(EMAIL);
+        message.setTo(client.getEmail());
+        message.setSubject("Senha alterada - Nosso Banco Digital");
+        message.setText("A sua senha foi alterada com sucesso!");
+
+        javaMailSender.send(message);
+        logger.info("Email informando mudança de senha");
+    }
 
 }
