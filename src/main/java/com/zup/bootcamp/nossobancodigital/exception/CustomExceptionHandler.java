@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.xml.bind.ValidationException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.FileSystemException;
 import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +51,8 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(FileSystemException.class)
-    public ResponseEntity<ApiErrorResponse> handleFileSystemException(FileSystemException e){
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ApiErrorResponse> handleIOException(IOException e){
         ApiErrorResponse error = new ApiErrorResponse();
         error.setField("File");
         error.setMessage(e.getMessage());
@@ -62,7 +61,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleException(FileNotFoundException e){
+    public ResponseEntity<ApiErrorResponse> handleFileNotFoundException(FileNotFoundException e){
         ApiErrorResponse error = new ApiErrorResponse();
         error.setField("File");
         error.setMessage(e.getMessage());
@@ -108,7 +107,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationException(ValidationException e){
         ApiErrorResponse error = new ApiErrorResponse();
-        error.setField("token");
+        error.setField("autenticação");
         error.setMessage(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

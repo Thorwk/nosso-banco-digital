@@ -1,6 +1,5 @@
 package com.zup.bootcamp.nossobancodigital.service;
 
-import com.zup.bootcamp.nossobancodigital.entity.ClientEntity;
 import com.zup.bootcamp.nossobancodigital.entity.TokenEntity;
 import com.zup.bootcamp.nossobancodigital.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +14,21 @@ import java.time.LocalDateTime;
 @Service
 public class TokenService {
 
-    private final int VALIDADE_TOKEN = 1;
+    // em horas
+    public static final int VALIDADE_TOKEN = 1;
 
     @Autowired
     private TokenRepository tokenRepository;
-
-    @Autowired
-    private EmailService emailService;
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public TokenEntity createToken(String id){
         TokenEntity tokenEntity = new TokenEntity();
         tokenRepository.save(tokenEntity);
         return tokenEntity;
+    }
+
+    public boolean existsByConteudo(String conteudo){
+        return tokenRepository.existsByConteudo(conteudo);
     }
 
     public boolean isExpired(String conteudo){

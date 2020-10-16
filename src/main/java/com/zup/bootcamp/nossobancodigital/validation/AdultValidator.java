@@ -9,7 +9,7 @@ import java.time.format.DateTimeParseException;
 
 public class AdultValidator implements ConstraintValidator<Adult, String> {
 
-    private static final int ADULT_AGE = 18;
+    private static final int IDADE_MINIMA = 18;
 
     @Override
     public boolean isValid(String nascimento, ConstraintValidatorContext constraintValidatorContext) throws DateTimeException {
@@ -18,6 +18,6 @@ public class AdultValidator implements ConstraintValidator<Adult, String> {
         }catch (DateTimeParseException e){
             throw new DateTimeException("Data inválida!");
         }
-        return LocalDate.now().minusYears(ADULT_AGE).isAfter(LocalDate.parse(nascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        return LocalDate.now().minusYears(IDADE_MINIMA).isAfter(LocalDate.parse(nascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 }
